@@ -52,6 +52,9 @@ class Set {
         }
     }
     
+    func cardsIsSelected(card: Card) -> Bool {
+        return selectedCards.index(of: card) != nil
+    }
     
     func isSet() -> Bool {
         //If two are... and one is not, then it is not a 'Set'.
