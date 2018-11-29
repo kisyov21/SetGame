@@ -56,49 +56,71 @@ class Set {
         return selectedCards.index(of: card) != nil
     }
     
+    func findSet() -> [Card]? {
+        if cardsInGame.count >= 3 {
+            for i in 0..<cardsInGame.count {
+                for j in i+1 ..< cardsInGame.count {
+                    for k in j+1 ..< cardsInGame.count {
+                        let newArray = [cardsInGame[i],cardsInGame[j],cardsInGame[k]]
+                        if containsSet(in: newArray) {
+                            return newArray
+                        }
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
+    
+    
     func isSet() -> Bool {
         //If two are... and one is not, then it is not a 'Set'.
         if selectedCards.count != 3 {
             return false
         }
         
-        if selectedCards[0].cardColor == selectedCards[1].cardColor {
-            if selectedCards[0].cardColor != selectedCards[2].cardColor {
+        return containsSet(in: selectedCards)
+    }
+    
+    func containsSet(in array: [Card]) -> Bool {
+        if array[0].cardColor == array[1].cardColor {
+            if array[0].cardColor != array[2].cardColor {
                 return false
             }
-        } else if selectedCards[1].cardColor == selectedCards[2].cardColor {
+        } else if array[1].cardColor == array[2].cardColor {
             return false
-        } else if (selectedCards[0].cardColor == selectedCards[2].cardColor) {
+        } else if (array[0].cardColor == array[2].cardColor) {
             return false
         }
         
-        if selectedCards[0].cardNumber == selectedCards[1].cardNumber {
-            if selectedCards[0].cardNumber != selectedCards[2].cardNumber {
+        if array[0].cardNumber == array[1].cardNumber {
+            if array[0].cardNumber != array[2].cardNumber {
                 return false
             }
-        } else if selectedCards[1].cardNumber == selectedCards[2].cardNumber {
+        } else if array[1].cardNumber == array[2].cardNumber {
             return false
-        } else if (selectedCards[0].cardNumber == selectedCards[2].cardNumber) {
+        } else if (array[0].cardNumber == array[2].cardNumber) {
             return false
         }
         
-        if selectedCards[0].cardShading == selectedCards[1].cardShading {
-            if selectedCards[0].cardShading != selectedCards[2].cardShading {
+        if array[0].cardShading == array[1].cardShading {
+            if array[0].cardShading != array[2].cardShading {
                 return false
             }
-        } else if selectedCards[1].cardShading == selectedCards[2].cardShading {
+        } else if array[1].cardShading == array[2].cardShading {
             return false
-        } else if (selectedCards[0].cardShading == selectedCards[2].cardShading) {
+        } else if (array[0].cardShading == array[2].cardShading) {
             return false
         }
         
-        if selectedCards[0].cardSymbol == selectedCards[1].cardSymbol {
-            if selectedCards[0].cardSymbol != selectedCards[2].cardSymbol {
+        if array[0].cardSymbol == array[1].cardSymbol {
+            if array[0].cardSymbol != array[2].cardSymbol {
                 return false
             }
-        } else if selectedCards[1].cardSymbol == selectedCards[2].cardSymbol {
+        } else if array[1].cardSymbol == array[2].cardSymbol {
             return false
-        } else if (selectedCards[0].cardSymbol == selectedCards[2].cardSymbol) {
+        } else if (array[0].cardSymbol == array[2].cardSymbol) {
             return false
         }
         

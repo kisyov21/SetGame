@@ -9,22 +9,21 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-   
-    @IBOutlet private var setCardButtons: [UIButton]!
     
-    @IBOutlet weak var dealThreeMoreCardsButton: UIButton!
     
     @IBOutlet weak var scoreLabel: UILabel!
     
-    let setGame = Set()
+    @IBOutlet var setCardButtons: [UIButton]!
     
+    @IBOutlet weak var dealThreeMoreCardButton: UIButton!
+    
+    let setGame = Set()
     override func viewDidLoad() {
         super.viewDidLoad()
         resetButtons()
         updateViewFromModel()
     }
-
+    
     func resetButtons() {
         for buttonsIndex in setCardButtons.indices {
             let button = setCardButtons[buttonsIndex]
@@ -36,8 +35,9 @@ class ViewController: UIViewController {
             button.setAttributedTitle(nil, for: UIControl.State.normal)
         }
     }
-
-    @IBAction private func selectCard(_ sender: UIButton) {
+    
+    
+    @IBAction func selectCard(_ sender: UIButton) {
         if let cardIndex = setCardButtons.index(of: sender) {
             if cardIndex < setGame.cardsInGame.count {
                 setGame.select(card: setGame.cardsInGame[cardIndex])
@@ -47,17 +47,31 @@ class ViewController: UIViewController {
     }
     
     @IBAction func newGame() {
-        dealThreeMoreCardsButton.isEnabled = true
+        dealThreeMoreCardButton.isEnabled = true
         setGame.newGame()
         resetButtons()
         updateViewFromModel()
     }
     
-    @IBAction func addThreeNewCads() {
-        setGame.addCards(numberOfCardsToSelect: 3)
-        updateViewFromModel()
-        if setGame.cardsInGame.count >= 24 {
-            dealThreeMoreCardsButton.isEnabled =  false
+    @IBAction func addThreeNewCards() {
+        if setGame.findSet() == nil && setGame.availableCards.count >= 3 {
+            setGame.addCards(numberOfCardsToSelect: 3)
+            updateViewFromModel()
+            if setGame.cardsInGame.count >= 24 {
+                dealThreeMoreCardButton.isEnabled = false
+            }
+        } else {
+            dealThreeMoreCardButton.isEnabled = false
+        }
+    }
+    
+    @IBAction func cheatTheGame() {
+        if let sets = setGame.findSet(){
+            setGame.selectedCards.removeAll()
+            for set in sets {
+                setGame.select(card: set)
+            }
+            updateViewFromModel()
         }
     }
     
@@ -69,6 +83,7 @@ class ViewController: UIViewController {
             let button = setCardButtons[cardButtonIndex]
             ButtonRender.renderCard(cardToRender: card, onButton: button, selectButton: setGame.cardsIsSelected(card: card), isSet: setGame.isSet())
             cardButtonIndex += 1
+            dealThreeMoreCardButton.isEnabled = true
         }
     }
     
